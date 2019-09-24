@@ -1,0 +1,30 @@
+---
+ - hosts: group1
+   become: yes
+   tasks:
+     - name: Installing Apache
+       yum:
+         name: httpd
+         state: latest
+     - name: Start the Apache Service
+       service:
+         name: httpd
+         state: restarted
+     - name: Putting Index Page
+       copy:
+         content: "Welcome To The Automation"
+         dest: /var/www/html/index.html
+     - name: Firewall Service Restarting
+       service:
+         name: firewalld
+         state: restarted
+     - name: Firewall Access Allocation
+       firewalld:
+         port: 80/tcp
+         permanent: true
+         state: enabled
+     - name: Firewall Service Restarting
+       service:
+         name: firewalld
+         state: restarted
+
